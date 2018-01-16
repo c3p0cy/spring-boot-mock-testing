@@ -35,3 +35,4 @@ public class HelloSpringBootControllerTest { ... }
 ----------------------------------------------------
 ## References:
 * [java Spring boot的最簡單最詳細的入門案例](https://www.jianshu.com/p/66166899c8f3)
+* [SpringBoot+MockMvc测试Controller笔记整理](http://blog.csdn.net/congge_1993/article/details/78541182)

@@ -32,9 +32,23 @@ public class HelloSpringBootControllerTest {
 
   @Test
   public void hello() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.get("/hello").accept(MediaType.APPLICATION_JSON_UTF8))
+    mockMvc.perform(MockMvcRequestBuilders.get("/hello")
+        .accept(MediaType.APPLICATION_JSON_UTF8))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(content().string(equalTo("Hello Spring Boot!")))
+        .andDo(MockMvcResultHandlers.print())
+        .andReturn();
+  }
+
+  @Test
+  public void hi() throws Exception {
+    mockMvc.perform(
+        MockMvcRequestBuilders.get("/hi")
+            .param("name", "Spring Boot Test")
+            .accept(MediaType.APPLICATION_JSON_UTF8)
+    )
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(content().string(equalTo("Hi, Spring Boot Test!")))
         .andDo(MockMvcResultHandlers.print())
         .andReturn();
   }
