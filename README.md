@@ -31,8 +31,25 @@ public class HelloSpringBootControllerTest { ... }
            .andReturn();
   }
 ```
+----------------------------------------------------
+## Test for a Controller that injects other services
+#### via MockServletContext and MockMvcBuilders.standaloneSetup():
+```java
+org.springframework.web.util.NestedServletException: Request processing failed; nested exception is java.lang.NullPointerException
+```
+* Cause: When you are using standalone setup, Spring doesn't have a chance to inject services as it doesn't control instances creation and wiring.
 
+#### Solutions:
+1. via WebApplicationContext:
+  ```java
+
+  ```
+2. via Mockito:
+  ```java
+
+  ```
 ----------------------------------------------------
 ## References:
 * [java Spring boot的最簡單最詳細的入門案例](https://www.jianshu.com/p/66166899c8f3)
 * [SpringBoot+MockMvc测试Controller笔记整理](http://blog.csdn.net/congge_1993/article/details/78541182)
+* [Spring MVC Test failing](https://stackoverflow.com/questions/32348270/spring-mvc-test-failing)
