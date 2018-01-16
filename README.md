@@ -42,11 +42,46 @@ org.springframework.web.util.NestedServletException: Request processing failed; 
 #### Solutions:
 1. via WebApplicationContext:
   ```java
+  @RunWith(SpringJUnit4ClassRunner.class)
+  @SpringBootTest(classes = SpringBootMockTestingApplication.class)
+  public class CalculatorControllerTest {
+    @Autowired
+    private WebApplicationContext context;
 
+    private MockMvc mockMvc;
+
+    @Before
+    public void setUp() {
+      mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+    }
+    
+    ...
+  }
   ```
 2. via Mockito:
   ```java
+  public class CalculatorControllerTestByMockito {
 
+    @InjectMocks
+    private CalculatorController calculatorController;
+
+    @Mock
+    private CalculatorService calculatorService;
+
+    private MockMvc mockMvc;
+
+    @Before
+    public void setUp() {
+      MockitoAnnotations.initMocks(this);
+      this.mockMvc = MockMvcBuilders.standaloneSetup(calculatorController).build();
+    }
+
+    @Test
+    public void minus() throws Exception {
+      Mockito.when(calculatorService.minus(4, 1)).thenReturn(3);
+      mockMvc.perform ...
+    }
+  }
   ```
 ----------------------------------------------------
 ## References:

@@ -1,18 +1,19 @@
 package tw.c3p0cy.practice.springbootmocktesting.rest;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -20,23 +21,27 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import tw.c3p0cy.practice.springbootmocktesting.SpringBootMockTestingApplication;
+import tw.c3p0cy.practice.springbootmocktesting.service.CalculatorService;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = SpringBootMockTestingApplication.class)
-public class CalculatorControllerTest {
+public class CalculatorControllerTestByMockito {
 
-  @Autowired
-  private WebApplicationContext context;
+  @InjectMocks
+  private CalculatorController calculatorController;
+
+  @Mock
+  private CalculatorService calculatorService;
 
   private MockMvc mockMvc;
 
   @Before
   public void setUp() {
-    mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+    MockitoAnnotations.initMocks(this);
+    this.mockMvc = MockMvcBuilders.standaloneSetup(calculatorController).build();
   }
 
   @Test
   public void minus() throws Exception {
+    Mockito.when(calculatorService.minus(4, 1)).thenReturn(3);
     mockMvc.perform(
         MockMvcRequestBuilders.get("/calculator/minus")
             .param("base", "4")
